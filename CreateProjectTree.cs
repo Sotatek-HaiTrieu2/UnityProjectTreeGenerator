@@ -35,13 +35,15 @@ namespace ProjectTreeGenerator
 
     public class CreateProjectTree
     {
-
+        
         [MenuItem("Tools/Generate Project Tree")]
         public static void Execute()
         {
-            var assets = GenerateFolderStructure();
+            var assets = GenerateFolderStructure(ProjectName);
             CreateFolders(assets);
         }
+        
+        private static string ProjectName = "Sample";
 
         private static void CreateFolders(Folder rootFolder)
         {
@@ -70,16 +72,20 @@ namespace ProjectTreeGenerator
             }
         }
 
-        private static Folder GenerateFolderStructure()
+        private static Folder GenerateFolderStructure(string projectName)
         {
-            Folder rootFolder = new Folder("Assets", "");
-            rootFolder.Add("Scripts");
-            rootFolder.Add("Scenes");
-            rootFolder.Add("Extensions");
-            rootFolder.Add("Resources");
-            rootFolder.Add("Plugins");
+            var rootFolder = new Folder("Assets", "");
 
-            var staticAssets = rootFolder.Add("StaticAssets");
+            var projectFolder = rootFolder.Add(projectName);
+            
+            projectFolder.Add("Scripts");
+            projectFolder.Add("Scenes");
+            projectFolder.Add("Extensions");
+            projectFolder.Add("Resources");
+            projectFolder.Add("Plugins");
+            projectFolder.Add("Editor");
+
+            var staticAssets = projectFolder.Add("StaticAssets");
             staticAssets.Add("Animations");
             staticAssets.Add("Animators");
             staticAssets.Add("Effects");
@@ -92,6 +98,8 @@ namespace ProjectTreeGenerator
             staticAssets.Add("Sprites");
             staticAssets.Add("Textures");
             staticAssets.Add("Videos");
+
+            var thirdParty = rootFolder.Add("ThirdParty");
 
             return rootFolder;
         }
